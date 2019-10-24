@@ -63,4 +63,7 @@ dependencies {
     implementation jaxb('org.glassfish.jaxb:jaxb-xjc:2.2.11')
     implementation(files(genJaxb.classesDir).builtBy(genJaxb))
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation 'javax.xml.bind:jaxb-api:2.3.0'
+    implementation 'javax.activation:activation:1.1'
+    implementation 'org.glassfish.jaxb:jaxb-runtime:2.3.0'
 }

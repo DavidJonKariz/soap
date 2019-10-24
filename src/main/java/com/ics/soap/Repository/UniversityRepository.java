@@ -1,6 +1,6 @@
 package com.ics.soap.Repository;
 
-import localhost._7991.soap_server.University;
+import localhost._7991.universities.University;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -15,7 +15,7 @@ public class UniversityRepository {
     private void loadData() {
 //        Strathmore
         University strathmore = new University();
-        strathmore.setName("Strathmore University");
+        strathmore.setName("Strathmore");
         strathmore.setLocation("Madaraka");
         strathmore.setYearFounded("1961");
         universities.put(strathmore.getName(), strathmore);
@@ -33,5 +33,9 @@ public class UniversityRepository {
         ku.setLocation("Thika");
         ku.setYearFounded("1985");
         universities.put(ku.getName(), ku);
+    }
+
+    public University getUniversityByName(String name) {
+        return universities.get(name);
     }
 }
