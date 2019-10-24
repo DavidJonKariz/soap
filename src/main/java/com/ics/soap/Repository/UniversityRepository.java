@@ -15,7 +15,7 @@ public class UniversityRepository {
     private void loadData() {
 //        Strathmore
         University strathmore = new University();
-        strathmore.setName("Strathmore University");
+        strathmore.setName("Strathmore");
         strathmore.setLocation("Madaraka");
         strathmore.setYearFounded("1961");
         universities.put(strathmore.getName(), strathmore);
