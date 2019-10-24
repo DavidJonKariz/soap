@@ -1,6 +1,6 @@
 package com.ics.soap.Repository;
 
-import localhost._7991.soap_server.University;
+import localhost._7991.universities.University;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
