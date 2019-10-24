@@ -11,7 +11,7 @@
 //
 //@Endpoint
 //public class UniversityEndpoint {
-//    private static final String NAMESPACE_URI = "http://localhost:7000/soap-server";
+//    private static final String NAMESPACE_URI = "http://localhost:7000/universities";
 //
 //
 //    private UniversityRepository universityRepository;

@@ -34,4 +34,8 @@ public class UniversityRepository {
         ku.setYearFounded("1985");
         universities.put(ku.getName(), ku);
     }
+
+    public University getUniversityByName(String name) {
+        return universities.get(name);
+    }
 }
