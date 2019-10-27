@@ -4,12 +4,16 @@ import localhost._7991.universities.University;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Component
 public class UniversityRepository {
     private Map<String, University> universities = new HashMap<>();
+//    private Map<Long, University> universitiesId = new HashMap<>();
+
 
     @PostConstruct
     private void loadData() {
@@ -38,4 +42,12 @@ public class UniversityRepository {
     public University getUniversityByName(String name) {
         return universities.get(name);
     }
+
+//    public University getUniversityById(Long id) {
+//        return universitiesId.get(id);
+//    }
+
+//    public List<University> getAll() {
+//        return (List<University>) universities.values();
+//    }
 }

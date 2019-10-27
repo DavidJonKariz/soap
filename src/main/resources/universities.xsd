@@ -1,6 +1,8 @@
 <xs:schema xmlns:xs = "http://www.w3.org/2001/XMLSchema" xmlns:tns = "http://localhost:7991/universities"
            targetNamespace = "http://localhost:7991/universities" elementFormDefault = "qualified">
 
+<!--    University CRUD-->
+<!--    Get One University-->
     <xs:element name="getUniversityRequest">
         <xs:complexType>
             <xs:sequence>
@@ -13,6 +15,99 @@
         <xs:complexType>
             <xs:sequence>
                 <xs:element name="university" type="tns:university"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+<!--    Get University by ID-->
+    <xs:element name="getUniversityByIdRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="universityId" type="xs:long"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getUniversityByIdResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="university" type="tns:university"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+<!--    List all Universities-->
+    <xs:element name="getAllUniversitiesRequest">
+        <xs:complexType/>
+    </xs:element>
+
+    <xs:element name="getAllUniversitiesResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="university" type="tns:university" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+<!--    Response Status-->
+    <xs:complexType name="serviceStatus">
+        <xs:sequence>
+            <xs:element name="statusCode" type="xs:string"/>
+            <xs:element name="message" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+<!--    Add University-->
+    <xs:element name="addUniversityRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="name" type="xs:string"/>
+                <xs:element name="location" type="xs:string"/>
+                <xs:element name="yearFounded" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="addUniversityResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="serviceStatus" type="tns:serviceStatus"/>
+                <xs:element name="university" type="tns:university"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+<!--    Update University-->
+    <xs:element name="updateUniversityRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="university" type="tns:university"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="updateUniversityResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="serviceStatus" type="tns:serviceStatus"/>
+                <xs:element name="university" type="tns:university"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+<!--    Delete University-->
+    <xs:element name="deleteUniversityRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="universityId" type="xs:long"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="deleteUniversityResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="serviceStatus" type="tns:serviceStatus"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>

@@ -1,0 +1,9 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:gs="http://localhost:7991/universities">
+    <soapenv:Header/>
+    <soapenv:Body>
+        <gs:getUniversityByIdRequest>
+            <gs:universityId>2</gs:universityId>
+        </gs:getUniversityByIdRequest>
+    </soapenv:Body>
+
+</soapenv:Envelope>
