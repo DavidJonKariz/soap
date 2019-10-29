@@ -1,0 +1,11 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:gs="http://localhost:7991/universities">
+    <soapenv:Header/>
+    <soapenv:Body>
+        <gs:addUniversityRequest>
+            <gs:name>Kenyatta University</gs:name>
+            <gs:location>Thika</gs:location>
+            <gs:yearFounded>1960</gs:yearFounded>
+        </gs:addUniversityRequest>
+    </soapenv:Body>
+
+</soapenv:Envelope>
