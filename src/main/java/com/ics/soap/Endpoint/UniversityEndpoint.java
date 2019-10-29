@@ -1,6 +1,5 @@
 package com.ics.soap.Endpoint;
 
-import com.ics.soap.Repository.UniversityRepository;
 import com.ics.soap.model.UniversityModel;
 import com.ics.soap.services.UniversityService;
 import localhost._7991.universities.*;
