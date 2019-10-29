@@ -2,7 +2,7 @@
     <soapenv:Header/>
     <soapenv:Body>
         <gs:getUniversityRequest>
-            <gs:name>Strathmore</gs:name>
+            <gs:name>Strathmore University</gs:name>
         </gs:getUniversityRequest>
     </soapenv:Body>
 

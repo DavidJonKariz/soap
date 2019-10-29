@@ -18,32 +18,35 @@ import java.util.List;
 public class UniversityEndpoint {
     private static final String NAMESPACE_URI = "http://localhost:7991/universities";
     private final UniversityService universityService;
-//    private UniversityRepository universityRepository;
 
 
     @Autowired
-    public UniversityEndpoint(UniversityRepository universityRepository, UniversityService universityService) {
-//        this.universityRepository = universityRepository;
+    public UniversityEndpoint(UniversityService universityService) {
         this.universityService = universityService;
     }
 
-//    One University with name
-//    @ResponsePayload
-//    @PayloadRoot(namespace = NAMESPACE_URI, localPart = "getUniversityRequest")
-//    public GetUniversityResponse getUniversity(@RequestPayload GetUniversityRequest request) {
-//        GetUniversityResponse response = new GetUniversityResponse();
-//        response.setUniversity(universityRepository.getUniversityByName(request.getName()));
-//
-//        return response;
-//    }
-
-//    Get University with ID
+//    TODO: One University with name ***
     @ResponsePayload
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "getUniversityRequest")
+    public GetUniversityResponse getUniversity(@RequestPayload GetUniversityRequest request) {
+        GetUniversityResponse response = new GetUniversityResponse();
+//        UniversityModel universityModel = universityService.findByName(request.getName());
+        University university = new University();
+        BeanUtils.copyProperties(universityService.findByName(request.getName()), university);
+        response.setUniversity(university);
+        return response;
+    }
+
+//    TODO: Get University with ID ***
+    @ResponsePayload
+    @PayloadRoot(namespace = NAMESPACE_URI, localPart = "getUniversityByIdRequest")
     public GetUniversityByIdResponse getUniversityById(@RequestPayload GetUniversityByIdRequest request) throws Exception {
         GetUniversityByIdResponse response = new GetUniversityByIdResponse();
         University university = new University();
         BeanUtils.copyProperties(universityService.findById(request.getUniversityId()), university);
+        ServiceStatus serviceStatus = new ServiceStatus();
+        serviceStatus.setStatusCode("SUCCESS");
+        serviceStatus.setMessage("University With ID: " + request.getUniversityId() + " Found");
         response.setUniversity(university);
         return response;
     }
@@ -64,42 +67,35 @@ public class UniversityEndpoint {
         return response;
     }
 
-//    Add University
+//    Add University ***
     @ResponsePayload
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "addUniversityRequest")
     public AddUniversityResponse addUniversity(@RequestPayload AddUniversityRequest request) throws Exception {
+        System.out.println("Name: " + request.getName());
+        System.out.println("Location: " + request.getLocation());
+        System.out.println("Year Founded: " + request.getYearFounded());
         AddUniversityResponse response = new AddUniversityResponse();
-        ServiceStatus serviceStatus = new ServiceStatus();
-        UniversityModel universityModel = new UniversityModel(request.getName(), request.getLocation(), request.getYearFounded());
-        response.setServiceStatus(universityService.addUniversity(universityModel, serviceStatus));
-        //        boolean flag = universityService.addUniversity(universityModel);
-//        if (!flag) {
-//            serviceStatus.setStatusCode("CONFLICT");
-//            serviceStatus.setMessage("Content Already Available");
-//            response.setServiceStatus(serviceStatus);
-//        } else {
-//            University university = new University();
-//            BeanUtils.copyProperties(universityModel, university);
-//            serviceStatus.setStatusCode("SUCCESS");
-//            serviceStatus.setMessage("Content Added Successfully");
-//            response.setServiceStatus(serviceStatus);
-//        }
-        return response;
-    }
-
-//    Update University
-    @ResponsePayload
-    @PayloadRoot(namespace = NAMESPACE_URI, localPart = "updateUniversityRequest")
-    public UpdateUniversityResponse updateUniversity(@RequestPayload UpdateUniversityRequest request) throws Exception {
-        UpdateUniversityResponse response = new UpdateUniversityResponse();
-        UniversityModel updateUni = universityService.findById(request.getUniversityId());
-//        BeanUtils.copyProperties(request.getUniversity(), universityModel);
-        ServiceStatus serviceStatus = universityService.updateUniversity(request.getUniversityId(), universityModel, new ServiceStatus());
+        University university = new University();
+        university.setName(request.getName());
+        university.setLocation(request.getLocation());
+        university.setYearFounded(request.getYearFounded());
+        ServiceStatus serviceStatus = universityService.addUniversity(university, new ServiceStatus());
         response.setServiceStatus(serviceStatus);
         return response;
     }
 
-//    Delete University
+//    Update University (Works)
+    @ResponsePayload
+    @PayloadRoot(namespace = NAMESPACE_URI, localPart = "updateUniversityRequest")
+    public UpdateUniversityResponse updateUniversity(@RequestPayload UpdateUniversityRequest request) throws Exception {
+        UpdateUniversityResponse response = new UpdateUniversityResponse();
+        UniversityModel updateUni = new UniversityModel(request.getName(), request.getLocation(), request.getYearFounded());
+        ServiceStatus serviceStatus = universityService.updateUniversity(request.getUniversityId(), updateUni, new ServiceStatus());
+        response.setServiceStatus(serviceStatus);
+        return response;
+    }
+
+//    Delete University (Works)
     @ResponsePayload
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "deleteUniversityRequest")
     public DeleteUniversityResponse deleteUniversity(@RequestPayload DeleteUniversityRequest request) throws Exception {

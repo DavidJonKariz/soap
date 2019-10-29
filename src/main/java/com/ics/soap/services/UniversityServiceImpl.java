@@ -3,6 +3,7 @@ package com.ics.soap.services;
 import com.ics.soap.Repository.UniversityRepo;
 import com.ics.soap.model.UniversityModel;
 import localhost._7991.universities.ServiceStatus;
+import localhost._7991.universities.University;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -37,33 +38,27 @@ public class UniversityServiceImpl implements UniversityService {
     }
 
     @Override
-    public ServiceStatus addUniversity(UniversityModel university, ServiceStatus serviceStatus) throws Exception {
-        UniversityModel universityModel = findById(university.getId());
-        if (!university.equals(findById(university.getId()))) {
+    public ServiceStatus addUniversity(University university, ServiceStatus serviceStatus) throws Exception {
+        UniversityModel universityModel = findByName(university.getName());
+        if (universityModel == null) {
             serviceStatus.setStatusCode("SUCCESS");
             serviceStatus.setMessage("University Added Successfully");
-            university = universityRepo.save(university);
+            universityModel = new UniversityModel(university.getName(), university.getLocation(), university.getYearFounded());
+            universityRepo.save(universityModel);
             return serviceStatus;
         }
         serviceStatus.setStatusCode("CONFLICT");
         serviceStatus.setMessage("University Already Exists");
         return serviceStatus;
-//        List<UniversityModel> list = universityRepo.findAll();
-//        if (list.size() > 0) {
-//            return false;
-//        } else {
-//            university = universityRepo.save(university);
-//            return true;
-//        }
     }
 
     @Override
-    public ServiceStatus updateUniversity(Long id, UniversityModel university, ServiceStatus serviceStatus) throws Exception {
-        if (findById(id) != null) {
-            UniversityModel universityModel = new UniversityModel(university.getName(), university.getLocation(), university.getYearFounded());
-//            universityModel.setName(university.getName());
-//            universityModel.setLocation(university.getLocation());
-//            universityModel.setYearFounded(university.getYearFounded());
+    public ServiceStatus updateUniversity(Long universityId, UniversityModel updateUni, ServiceStatus serviceStatus) throws Exception {
+        UniversityModel universityModel = findById(universityId);
+        if (universityModel != null) {
+            universityModel.setName(updateUni.getName());
+            universityModel.setLocation(updateUni.getLocation());
+            universityModel.setYearFounded(updateUni.getYearFounded());
             serviceStatus.setStatusCode("SUCCESS");
             serviceStatus.setMessage("University Updated Successfully");
             universityRepo.save(universityModel);
