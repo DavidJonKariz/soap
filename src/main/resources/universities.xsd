@@ -31,6 +31,7 @@
     <xs:element name="getUniversityByIdResponse">
         <xs:complexType>
             <xs:sequence>
+                <xs:element name="serviceStatus" type="tns:serviceStatus"/>
                 <xs:element name="university" type="tns:university"/>
             </xs:sequence>
         </xs:complexType>
@@ -81,7 +82,10 @@
     <xs:element name="updateUniversityRequest">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="university" type="tns:university"/>
+                <xs:element name="universityId" type="xs:long"/>
+                <xs:element name="name" type="xs:string"/>
+                <xs:element name="location" type="xs:string"/>
+                <xs:element name="yearFounded" type="xs:string"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>

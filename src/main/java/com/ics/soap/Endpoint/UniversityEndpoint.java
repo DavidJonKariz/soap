@@ -17,13 +17,14 @@ import java.util.List;
 @Endpoint
 public class UniversityEndpoint {
     private static final String NAMESPACE_URI = "http://localhost:7991/universities";
-    private UniversityService universityService;
+    private final UniversityService universityService;
 //    private UniversityRepository universityRepository;
 
 
     @Autowired
-    public UniversityEndpoint(UniversityRepository universityRepository) {
+    public UniversityEndpoint(UniversityRepository universityRepository, UniversityService universityService) {
 //        this.universityRepository = universityRepository;
+        this.universityService = universityService;
     }
 
 //    One University with name
@@ -39,10 +40,10 @@ public class UniversityEndpoint {
 //    Get University with ID
     @ResponsePayload
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "getUniversityRequest")
-    public GetUniversityByIdResponse getUniversity(@RequestPayload GetUniversityByIdRequest request) throws Exception {
+    public GetUniversityByIdResponse getUniversityById(@RequestPayload GetUniversityByIdRequest request) throws Exception {
         GetUniversityByIdResponse response = new GetUniversityByIdResponse();
         University university = new University();
-        BeanUtils.copyProperties(universityService.getUniversityById(request.getUniversityId()), university);
+        BeanUtils.copyProperties(universityService.findById(request.getUniversityId()), university);
         response.setUniversity(university);
         return response;
     }
@@ -66,36 +67,34 @@ public class UniversityEndpoint {
 //    Add University
     @ResponsePayload
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "addUniversityRequest")
-    public AddUniversityResponse addUniversityResponse(@RequestPayload AddUniversityRequest request) {
+    public AddUniversityResponse addUniversity(@RequestPayload AddUniversityRequest request) throws Exception {
         AddUniversityResponse response = new AddUniversityResponse();
         ServiceStatus serviceStatus = new ServiceStatus();
         UniversityModel universityModel = new UniversityModel(request.getName(), request.getLocation(), request.getYearFounded());
-        boolean flag = universityService.addUniversity(universityModel);
-        if (!flag) {
-            serviceStatus.setStatusCode("CONFLICT");
-            serviceStatus.setMessage("Content Already Available");
-            response.setServiceStatus(serviceStatus);
-        } else {
-            University university = new University();
-            BeanUtils.copyProperties(universityModel, university);
-            serviceStatus.setStatusCode("SUCCESS");
-            serviceStatus.setMessage("Content Added Successfully");
-            response.setServiceStatus(serviceStatus);
-        }
+        response.setServiceStatus(universityService.addUniversity(universityModel, serviceStatus));
+        //        boolean flag = universityService.addUniversity(universityModel);
+//        if (!flag) {
+//            serviceStatus.setStatusCode("CONFLICT");
+//            serviceStatus.setMessage("Content Already Available");
+//            response.setServiceStatus(serviceStatus);
+//        } else {
+//            University university = new University();
+//            BeanUtils.copyProperties(universityModel, university);
+//            serviceStatus.setStatusCode("SUCCESS");
+//            serviceStatus.setMessage("Content Added Successfully");
+//            response.setServiceStatus(serviceStatus);
+//        }
         return response;
     }
 
-//    Update Unversity
+//    Update University
     @ResponsePayload
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "updateUniversityRequest")
-    public UpdateUniversityResponse getAllUniversities(@RequestPayload UpdateUniversityRequest request) {
+    public UpdateUniversityResponse updateUniversity(@RequestPayload UpdateUniversityRequest request) throws Exception {
         UpdateUniversityResponse response = new UpdateUniversityResponse();
-        UniversityModel universityModel = new UniversityModel(request.getUniversity().getName(), request.getUniversity().getLocation(), request.getUniversity().getYearFounded());
-        BeanUtils.copyProperties(request.getUniversity(), universityModel);
-        universityService.updateUniversity(universityModel);
-        ServiceStatus serviceStatus = new ServiceStatus();
-        serviceStatus.setStatusCode("SUCCESS");
-        serviceStatus.setMessage("Content Updated Successfully");
+        UniversityModel updateUni = universityService.findById(request.getUniversityId());
+//        BeanUtils.copyProperties(request.getUniversity(), universityModel);
+        ServiceStatus serviceStatus = universityService.updateUniversity(request.getUniversityId(), universityModel, new ServiceStatus());
         response.setServiceStatus(serviceStatus);
         return response;
     }
@@ -103,18 +102,10 @@ public class UniversityEndpoint {
 //    Delete University
     @ResponsePayload
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "deleteUniversityRequest")
-    public DeleteUniversityResponse getAllUniversities(@RequestPayload DeleteUniversityRequest request) throws Exception {
+    public DeleteUniversityResponse deleteUniversity(@RequestPayload DeleteUniversityRequest request) throws Exception {
         DeleteUniversityResponse response = new DeleteUniversityResponse();
-        UniversityModel universityModel = universityService.getUniversityById(request.getUniversityId());
-        ServiceStatus serviceStatus = new ServiceStatus();
-        if (universityModel == null) {
-            serviceStatus.setStatusCode("Fail");
-            serviceStatus.setMessage("Content Not Available");
-        } else {
-            universityService.deleteUniversity(universityModel);
-            serviceStatus.setStatusCode("SUCCESS");
-            serviceStatus.setMessage("Content Deleted Successfully");
-        }
+        UniversityModel universityModel = universityService.findById(request.getUniversityId());
+        ServiceStatus serviceStatus = universityService.deleteUniversity(universityModel, new ServiceStatus());
         response.setServiceStatus(serviceStatus);
         return response;
     }
